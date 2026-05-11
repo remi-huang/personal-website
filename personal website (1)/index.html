@@ -1,0 +1,2194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Remi · Personal Site</title>
+  <meta name="description" content="Remi's personal site for AI design case studies, tool reviews, shipped app experiments, and notes from building with AI." />
+  <link rel="canonical" href="/index.html" />
+  <link rel="alternate" hreflang="en" href="/index.html" />
+  <link rel="alternate" hreflang="zh-CN" href="/index.html" />
+  <link rel="alternate" hreflang="x-default" href="/index.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Remi · AI Design, Apps, and Build Notes" />
+  <meta property="og:description" content="Case studies, tool reviews, shipped app experiments, and practical notes from building with AI." />
+  <meta property="og:url" content="/index.html" />
+  <meta property="og:image" content="/uploads/onemoment-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Remi · AI Design, Apps, and Build Notes" />
+  <meta name="twitter:description" content="Case studies, tool reviews, shipped app experiments, and practical notes from building with AI." />
+  <meta name="twitter:image" content="/uploads/onemoment-icon.png" />
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="preload" href="https://raw.githubusercontent.com/Chenyu-otf/chenyuluoyan_thin/main/ChenYuluoyan-2.0-Thin.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      font-family: var(--font-body);
+      color: var(--ink-black);
+    }
+
+    * { box-sizing: border-box; }
+
+    a { color: inherit; }
+
+    .site-shell {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 16% 12%, rgba(29, 58, 138, 0.035), transparent 38%),
+        radial-gradient(ellipse at 88% 86%, rgba(217, 74, 58, 0.035), transparent 36%),
+        var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .site-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.34;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.055'/></svg>");
+      mix-blend-mode: multiply;
+    }
+
+    .hero {
+      width: min(100%, 1440px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 36px 56px 30px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-nav {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--nav-gap);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--nav-font-size);
+      letter-spacing: var(--nav-letter-spacing);
+      left: 50%;
+      position: fixed;
+      top: var(--nav-top);
+      transform: translateX(-50%);
+      width: min(calc(100% - (var(--nav-page-gutter) * 2)), var(--nav-max-width));
+      z-index: 80;
+    }
+
+    .hero-nav a,
+    .hero-nav span {
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-active,
+    .nav-contact,
+    .hero-nav-items > a {
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-spacer {
+      flex: 1;
+    }
+
+    .lang-switch {
+      align-items: center;
+      color: var(--ink-soft);
+      display: inline-flex;
+      gap: 6px;
+      margin-left: 12px;
+    }
+
+    .lang-switch button {
+      background: transparent;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      letter-spacing: inherit;
+      padding: 0;
+      text-transform: uppercase;
+    }
+
+    .lang-switch button.is-active {
+      color: var(--ink-blue);
+    }
+
+    .hero-nav-items {
+      align-items: flex-start;
+      display: flex;
+      flex: 1;
+      gap: var(--nav-gap);
+    }
+
+    .hero-nav-toggle {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: var(--ink-soft);
+      cursor: pointer;
+      display: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      gap: 8px;
+      letter-spacing: 0.08em;
+      padding: 6px 4px;
+      text-transform: uppercase;
+    }
+
+    .hero-nav-toggle-bars {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 18px;
+    }
+
+    .hero-nav-toggle-bars > span {
+      background: var(--ink-black);
+      border-radius: 1px;
+      height: 1.5px;
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    .hero-nav.is-open .hero-nav-toggle-bars > span:nth-child(1) {
+      transform: translateY(5.5px) rotate(45deg);
+    }
+
+    .hero-nav.is-open .hero-nav-toggle-bars > span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hero-nav.is-open .hero-nav-toggle-bars > span:nth-child(3) {
+      transform: translateY(-5.5px) rotate(-45deg);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(540px, 720px) minmax(430px, 1fr);
+      gap: clamp(24px, 4vw, 68px);
+      align-items: center;
+      padding-top: 76px;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 10;
+      padding-bottom: 60px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(58px, 5vw, 68px);
+      font-weight: 400;
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+
+    .hero-title-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .script-accent {
+      color: var(--ink-blue);
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-size: clamp(66px, 5.7vw, 76px);
+      font-style: normal;
+      font-weight: 500;
+      line-height: 0.86;
+      margin-left: 8px;
+      transform: rotate(-3deg) translateY(5px);
+    }
+
+    .underlined-phrase {
+      display: inline-block;
+      position: relative;
+    }
+
+    .down-mark {
+      color: var(--ink-blue);
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-size: clamp(54px, 5vw, 64px);
+      margin-left: 14px;
+      transform: translateY(8px);
+    }
+
+    .hero-meta {
+      color: var(--ink-soft);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      line-height: 1.65;
+      margin-top: 64px;
+      max-width: 680px;
+    }
+
+    .newsletter-signup {
+      margin-top: 12px;
+      max-width: 470px;
+    }
+
+    .newsletter-copy {
+      display: grid;
+      gap: 3px;
+      margin-bottom: 10px;
+    }
+
+    .newsletter-title {
+      color: var(--ink-black);
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 22px;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+
+    .newsletter-desc {
+      color: var(--ink-soft);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+    }
+
+    .newsletter-row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      width: min(100%, 420px);
+    }
+
+    .newsletter-row input,
+    .newsletter-row button {
+      border: 1px solid var(--ink-black);
+      border-radius: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      min-height: 38px;
+    }
+
+    .newsletter-row input {
+      background: rgba(253, 251, 245, 0.7);
+      color: var(--ink-black);
+      padding: 0 12px;
+      width: 100%;
+    }
+
+    .newsletter-row input::placeholder {
+      color: #9a9a9a;
+    }
+
+    .newsletter-row button {
+      background: var(--ink-black);
+      color: var(--paper);
+      cursor: pointer;
+      padding: 0 14px;
+    }
+
+    .newsletter-row button:hover {
+      background: var(--ink-blue);
+      border-color: var(--ink-blue);
+    }
+
+    .newsletter-row button:disabled {
+      cursor: wait;
+      opacity: 0.62;
+    }
+
+    .newsletter-status {
+      color: var(--ink-blue);
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 9px;
+      transform: rotate(-1deg);
+    }
+
+    .hidden-field {
+      display: none;
+    }
+
+    .strike-word {
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+
+    .hero-sparkle-one,
+    .hero-sparkle-two {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .hero-sparkle-one {
+      left: 52%;
+      top: -20px;
+    }
+
+    .hero-sparkle-two {
+      left: 74%;
+      top: 128px;
+      transform: rotate(12deg);
+    }
+
+    .photo-cluster {
+      align-self: center;
+      height: clamp(430px, 42vw, 560px);
+      position: relative;
+      min-width: 0;
+    }
+
+    .photo-card {
+      background: transparent;
+      box-shadow: 0 18px 42px rgba(26, 26, 26, 0.13), 0 2px 8px rgba(26, 26, 26, 0.1);
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      transform-origin: center center;
+    }
+
+    .photo-card--plain {
+      background: transparent;
+      padding: 0;
+    }
+
+    .photo-card img,
+    .photo-card video,
+    .photo-image {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .photo-card video {
+      cursor: pointer;
+    }
+
+    .photo-image {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), transparent 34%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0 8px, transparent 8px 16px),
+        linear-gradient(135deg, #58709d 0%, #c7aa8b 42%, #51775d 100%);
+      position: relative;
+    }
+
+    .photo-label {
+      bottom: 8px;
+      color: rgba(255,255,255,0.88);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      left: 10px;
+      letter-spacing: 0.05em;
+      position: absolute;
+      text-transform: uppercase;
+    }
+
+    .photo-caption {
+      bottom: 6px;
+      color: var(--ink-blue);
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      left: 10px;
+      line-height: 1.1;
+      position: absolute;
+      right: 10px;
+    }
+
+    .photo-back {
+      height: 270px;
+      left: 2%;
+      top: 16%;
+      transform: rotate(-6deg);
+      width: 220px;
+      z-index: 2;
+    }
+
+    .photo-main {
+      height: min(100%, 520px);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(2deg);
+      width: min(78%, 380px);
+      z-index: 5;
+    }
+
+    .photo-side {
+      height: 240px;
+      right: 1%;
+      top: 42%;
+      transform: rotate(8deg);
+      width: 200px;
+      z-index: 3;
+    }
+
+    .tape {
+      background: rgba(255, 240, 180, 0.65);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      height: 18px;
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      top: -10px;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 60px;
+      z-index: 6;
+    }
+
+    .cluster-note {
+      color: var(--ink-blue);
+      font-family: 'Caveat', cursive;
+      font-size: 24px;
+      left: 12%;
+      position: absolute;
+      top: 4%;
+      transform: rotate(-4deg);
+      z-index: 8;
+    }
+
+    .cluster-arrow,
+    .cluster-scribble,
+    .cluster-smiley {
+      position: absolute;
+      z-index: 8;
+    }
+
+    .cluster-arrow {
+      left: 24%;
+      top: 7%;
+      transform: rotate(-15deg);
+    }
+
+    .portrait-note {
+      color: var(--ink-blue);
+      left: -7%;
+      position: absolute;
+      top: 9%;
+      transform: translateX(-25px) rotate(-3deg);
+      z-index: 9;
+    }
+
+    .portrait-name {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(42px, 4.2vw, 58px);
+      font-weight: 600;
+      line-height: 0.9;
+    }
+
+    .portrait-role {
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      line-height: 1.05;
+      margin-top: 8px;
+      max-width: 190px;
+    }
+
+    html[lang^="zh"] .phone-tap-hint-label {
+      font-family: var(--font-script-cjk);
+      font-weight: 500;
+    }
+
+    html[lang^="zh"] .newsletter-status {
+      font-family: var(--font-body-cjk);
+      font-weight: 500;
+      transform: none;
+    }
+
+    html[lang^="zh"] .portrait-name,
+    html[lang^="zh"] .portrait-role {
+      font-family: var(--font-script-cjk);
+      font-weight: 500;
+    }
+
+    .portrait-arrow {
+      left: 22%;
+      position: absolute;
+      top: 20%;
+      transform: rotate(-14deg);
+      z-index: 9;
+    }
+
+    .cluster-scribble {
+      bottom: 11%;
+      left: 2%;
+    }
+
+    .cluster-smiley {
+      bottom: 15%;
+      left: 18%;
+      transform: rotate(-8deg);
+    }
+
+    .scroll-cue {
+      color: #888888;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 5;
+    }
+
+    .built-section {
+      background: var(--paper-warm);
+      border-top: 1px solid rgba(26, 26, 26, 0.12);
+      min-height: 100vh;
+      padding: 96px 56px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .built-inner {
+      margin: 0 auto;
+      max-width: 1328px;
+    }
+
+    .section-kicker {
+      color: var(--ink-blue);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .built-layout {
+      align-items: center;
+      display: grid;
+      gap: clamp(36px, 6vw, 92px);
+      grid-template-columns: minmax(520px, 1.15fr) minmax(330px, 0.85fr);
+    }
+
+    .built-copy {
+      padding-left: clamp(24px, 3vw, 48px);
+    }
+
+    .built-copy h2 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(56px, 6vw, 86px);
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 0.95;
+      margin: 0;
+    }
+
+    .built-copy p {
+      color: #3b3b3b;
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 28px 0 0;
+      max-width: 560px;
+    }
+
+    .product-intro {
+      border-left: 2px solid var(--ink-blue);
+      margin-top: 0;
+      max-width: 520px;
+      padding-left: 18px;
+    }
+
+    .product-intro-label {
+      color: var(--ink-blue);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .product-intro h3 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(58px, 5vw, 68px);
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.06;
+      margin: 0;
+    }
+
+    .product-intro p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    .app-store-badge {
+      display: inline-block;
+      margin-top: 24px;
+      width: 180px;
+    }
+
+    .app-store-badge svg {
+      display: block;
+      height: auto;
+      width: 100%;
+    }
+
+    .build-entry {
+      color: inherit;
+      display: block;
+      margin-top: 26px;
+      max-width: 520px;
+      padding: 22px 0 0;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .build-entry-text {
+      color: #3b3b3b;
+      display: block;
+      font-size: 14px;
+      line-height: 1.55;
+      margin-top: 6px;
+      max-width: 440px;
+    }
+
+    .build-entry::before {
+      background: rgba(26, 26, 26, 0.2);
+      content: "";
+      height: 1px;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 60%;
+    }
+
+    .build-entry:hover .build-entry-link {
+      text-decoration-color: currentColor;
+    }
+
+    .build-entry-label {
+      color: var(--ink-blue);
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      margin-bottom: 11px;
+      text-transform: uppercase;
+    }
+
+    .build-entry strong {
+      display: block;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+
+    .build-entry p {
+      color: #3b3b3b;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 12px;
+      max-width: 460px;
+    }
+
+    .build-entry-link {
+      color: var(--ink-blue);
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin-top: 14px;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 5px;
+      text-transform: uppercase;
+      transition: text-decoration-color 160ms ease;
+    }
+
+    .phone-shell {
+      background: transparent;
+      border: 0;
+      border-radius: 42px;
+      box-shadow: none;
+      justify-self: center;
+      padding: 22px;
+      position: relative;
+      width: min(100%, 320px);
+    }
+
+    .phone-tap-hint {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      left: 14px;
+      pointer-events: none;
+      position: absolute;
+      top: -68px;
+      z-index: 10;
+    }
+
+    .phone-tap-hint-label {
+      color: var(--ink-blue);
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      line-height: 1;
+      transform: rotate(-4deg);
+      white-space: nowrap;
+    }
+
+    @keyframes app-icon-pulse {
+      0%, 100% { transform: scale(1); }
+      35%, 65% { transform: scale(1.07); }
+    }
+
+    .built-section.has-entered .home-app--released .home-app-icon {
+      animation: app-icon-pulse 1.5s ease-in-out 0.4s 3;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .built-section.has-entered .home-app--released .home-app-icon {
+        animation: none;
+      }
+    }
+
+    .phone-scribble-frame {
+      display: block;
+      filter: url(#rough-paper);
+      pointer-events: none;
+      position: absolute;
+      z-index: 4;
+    }
+
+    .phone-scribble-frame path {
+      stroke-width: 2.6px;
+    }
+
+    .phone-scribble-frame--outer {
+      height: calc(100% - 10px);
+      left: 5px;
+      top: 5px;
+      width: calc(100% - 10px);
+    }
+
+    .phone-scribble-frame--inner {
+      height: 100%;
+      inset: 0;
+      overflow: visible;
+      width: 100%;
+    }
+
+    .phone-top {
+      align-items: center;
+      color: #fdfbf5;
+      display: grid;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      grid-template-columns: 1fr auto 1fr;
+      padding: 4px 16px 10px;
+    }
+
+    .phone-top span:last-child {
+      justify-self: end;
+    }
+
+    .phone-island {
+      background: #050505;
+      border-radius: 999px;
+      display: block;
+      height: 22px;
+      width: 82px;
+    }
+
+    .phone-screen {
+      aspect-ratio: 900 / 1920;
+      border-radius: 32px;
+      box-shadow: 0 20px 52px rgba(26, 26, 26, 0.12);
+      overflow: visible;
+      position: relative;
+    }
+
+    .phone-wallpaper {
+      border-radius: 32px;
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .phone-demo-video {
+      border-radius: 32px;
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .home-app-layer {
+      inset: 0;
+      position: absolute;
+    }
+
+    .phone-demo-video + .phone-scribble-frame + .home-app-layer {
+      display: none;
+    }
+
+    .phone-home-button {
+      background: rgba(253, 251, 245, 0.8);
+      border: 1px solid rgba(29, 58, 138, 0.45);
+      bottom: 28px;
+      color: var(--ink-blue);
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      left: 50%;
+      letter-spacing: 0.04em;
+      padding: 8px 10px;
+      position: absolute;
+      transform: translateX(-50%);
+      z-index: 6;
+    }
+
+    .phone-home-button:hover {
+      background: var(--ink-blue);
+      color: var(--paper);
+    }
+
+    .home-app {
+      background: transparent;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      display: grid;
+      font-family: 'Inter', sans-serif;
+      gap: 7px;
+      justify-items: center;
+      padding: 0;
+      position: absolute;
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.38);
+      width: 74px;
+    }
+
+    .home-app:focus-visible {
+      outline: 2px solid var(--ink-blue);
+      outline-offset: 3px;
+    }
+
+    .home-app--released {
+      left: 6.8%;
+      top: 8.2%;
+    }
+
+    .home-app--brewing {
+      left: 34%;
+      top: 8.2%;
+    }
+
+    .home-app-icon {
+      align-items: center;
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+      color: var(--paper);
+      display: grid;
+      font-family: 'Caveat', cursive;
+      font-size: 34px;
+      font-weight: 700;
+      height: 58px;
+      letter-spacing: 0;
+      line-height: 1;
+      place-items: center;
+      width: 58px;
+    }
+
+    .home-app.is-selected .home-app-icon {
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.95), 0 0 0 4px var(--ink-blue), 0 12px 24px rgba(0,0,0,0.2);
+    }
+
+    .home-app-icon--brewing {
+      background:
+        repeating-linear-gradient(-45deg, rgba(26,26,26,0.07) 0 8px, transparent 8px 16px),
+        rgba(255, 255, 255, 0.82);
+      color: var(--ink-blue);
+    }
+
+    .home-app-name {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .home-app--released .home-app-name {
+      opacity: 1;
+    }
+
+    .contact-page {
+      align-items: center;
+      display: grid;
+      min-height: 100vh;
+      padding: 120px 56px 72px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-note {
+      justify-self: center;
+      text-align: center;
+      transform: rotate(-1deg);
+    }
+
+    .contact-title {
+      color: var(--ink-blue);
+      font-family: var(--font-script-cjk);
+      font-size: clamp(42px, 6vw, 76px);
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .contact-email {
+      color: var(--ink-black);
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: clamp(16px, 2vw, 24px);
+      letter-spacing: 0.02em;
+      text-decoration: underline;
+      text-decoration-color: rgba(29, 58, 138, 0.45);
+      text-underline-offset: 8px;
+    }
+
+    .article-wrap {
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 132px 56px 104px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .article-meta {
+      color: var(--ink-blue);
+      font-family: var(--font-mono);
+      font-size: var(--t-xs);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .article-hero {
+      display: grid;
+      gap: clamp(34px, 6vw, 80px);
+      grid-template-columns: minmax(0, 1fr) 220px;
+      margin-bottom: 40px;
+    }
+
+    .article-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4.6vw, 60px);
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.06;
+      margin: 0;
+      max-width: var(--measure);
+    }
+
+    .article-hero p {
+      color: var(--ink-body);
+      font-size: var(--t-md);
+      line-height: 1.7;
+      margin: 28px 0 0;
+      max-width: var(--measure);
+    }
+
+    .app-note {
+      align-self: end;
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+    }
+
+    .app-note img {
+      border-radius: 30px;
+      box-shadow: 0 18px 42px rgba(26, 26, 26, 0.17);
+      display: block;
+      height: 132px;
+      width: 132px;
+    }
+
+    .app-note span {
+      color: var(--ink-blue);
+      font-family: var(--font-script);
+      font-size: var(--t-lg);
+      font-weight: 500;
+      line-height: 1;
+      transform: rotate(-3deg);
+    }
+
+    .tools-strip {
+      border-bottom: 1px solid var(--rule-firm);
+      border-top: 1px solid var(--rule-firm);
+      display: grid;
+      gap: 0;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 0 0 60px;
+      padding: 24px 0;
+    }
+
+    .tools-strip div {
+      border-left: 1px solid var(--rule-firm);
+      padding: 0 18px;
+    }
+
+    .tools-strip div:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .tools-strip span {
+      color: var(--ink-blue);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--t-xs);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      margin-bottom: 9px;
+      text-transform: uppercase;
+    }
+
+    .tools-strip strong {
+      display: block;
+      font-size: var(--t-base);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .build-photo-strip {
+      margin: -18px 0 64px;
+      max-width: min(100%, 980px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .build-photo-strip::after {
+      background: linear-gradient(90deg, transparent, var(--paper));
+      bottom: 18px;
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 8px;
+      width: 52px;
+    }
+
+    .build-photo-rail {
+      cursor: grab;
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      padding: 8px 0 18px;
+      scroll-snap-type: x proximity;
+      scrollbar-color: rgba(29, 58, 138, 0.42) rgba(26, 26, 26, 0.08);
+      scrollbar-width: thin;
+      user-select: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .build-photo-rail.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+    }
+
+    .build-photo-rail::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .build-photo-rail::-webkit-scrollbar-track {
+      background: rgba(26, 26, 26, 0.08);
+    }
+
+    .build-photo-rail::-webkit-scrollbar-thumb {
+      background: rgba(29, 58, 138, 0.42);
+      border-radius: 999px;
+    }
+
+    .build-photo-rail img {
+      background: var(--paper);
+      border: 1px solid rgba(26, 26, 26, 0.14);
+      box-shadow: 0 14px 34px rgba(26, 26, 26, 0.1);
+      display: block;
+      flex: 0 0 auto;
+      height: clamp(230px, 27vw, 330px);
+      object-fit: contain;
+      scroll-snap-align: start;
+      width: auto;
+    }
+
+    .intro-quote {
+      background: var(--paper-warm);
+      color: var(--ink-body);
+      font-family: var(--font-body);
+      font-size: var(--t-md);
+      font-weight: 400;
+      line-height: 1.72;
+      margin: 0 0 44px;
+      max-width: var(--measure);
+      padding: 20px 24px;
+    }
+
+    .article-body {
+      max-width: 920px;
+    }
+
+    .article-body h2 {
+      font-family: var(--font-body);
+      font-size: clamp(26px, 2.8vw, 32px);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      margin: 56px 0 16px;
+      max-width: var(--measure);
+    }
+
+    .article-body p {
+      color: var(--ink-body);
+      font-size: var(--t-md);
+      line-height: 1.72;
+      margin: 0 0 22px;
+      max-width: var(--measure);
+    }
+
+    .article-body ul {
+      color: var(--ink-body);
+      display: grid;
+      gap: 12px;
+      font-size: var(--t-md);
+      line-height: 1.72;
+      margin: 0 0 22px;
+      max-width: var(--measure);
+      padding-left: 22px;
+    }
+
+    .article-body li::marker {
+      color: var(--ink-blue);
+    }
+
+    .article-body strong {
+      color: var(--ink-black);
+      font-weight: 600;
+    }
+
+    .timeline {
+      display: grid;
+      margin: 28px 0 12px;
+    }
+
+    .step {
+      border-top: 1px solid var(--rule-firm);
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 48px minmax(0, 1fr);
+      max-width: var(--measure);
+      padding: 28px 0;
+    }
+
+    .step:last-child {
+      border-bottom: 1px solid var(--rule-firm);
+    }
+
+    .step-number {
+      color: var(--ink-blue);
+      font-family: var(--font-mono);
+      font-size: var(--t-sm);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      padding-top: 6px;
+    }
+
+    .step h3 {
+      font-family: var(--font-body);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .step p {
+      color: var(--ink-body);
+      font-size: var(--t-base);
+      line-height: 1.72;
+      margin: 10px 0 0;
+    }
+
+    .pull-note {
+      border-left: 2px solid var(--ink-blue);
+      color: var(--ink-body);
+      font-size: var(--t-md);
+      line-height: 1.72;
+      margin: 36px 0;
+      max-width: var(--measure);
+      padding-left: 20px;
+    }
+
+    .reading-signoff {
+      color: var(--ink-blue);
+      font-family: var(--font-script);
+      font-size: 28px;
+      line-height: 1;
+      margin: 56px 0 -8px;
+      transform: rotate(-2deg);
+      transform-origin: left center;
+    }
+
+    .community-cta {
+      border-top: 1px solid var(--rule-firm);
+      color: var(--ink-body);
+      font-size: var(--t-md);
+      line-height: 1.72;
+      margin-top: 34px;
+      max-width: var(--measure);
+      padding-top: 22px;
+    }
+
+    @media (max-width: 820px) {
+      .article-wrap {
+        padding: 118px 28px 86px;
+      }
+
+      .article-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .app-note {
+        justify-self: start;
+      }
+
+      .tools-strip {
+        gap: 22px 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .build-photo-strip {
+        margin-top: -24px;
+        max-width: 100%;
+      }
+
+      .tools-strip div:nth-child(odd) {
+        border-left: 0;
+        padding-left: 0;
+      }
+    }
+
+
+    html[lang^="zh"] .article-hero h1 {
+      font-family: var(--font-display-cjk);
+      font-size: clamp(34px, 4.4vw, 56px);
+      line-height: 1.16;
+    }
+
+    html[lang^="zh"] .intro-quote,
+    html[lang^="zh"] .article-body h2,
+    html[lang^="zh"] .article-body p,
+    html[lang^="zh"] .article-body ul,
+    html[lang^="zh"] .step h3 {
+      font-family: var(--font-body-cjk);
+    }
+
+    html[lang^="zh"] .intro-quote,
+    html[lang^="zh"] .article-body p,
+    html[lang^="zh"] .article-body ul,
+    html[lang^="zh"] .pull-note,
+    html[lang^="zh"] .community-cta {
+      line-height: 1.78;
+    }
+
+    @media (max-width: 1100px) {
+      .hero {
+        padding-left: 36px;
+        padding-right: 36px;
+      }
+
+      .hero-nav {
+        gap: 20px;
+      }
+
+      .hero-nav-items {
+        gap: 20px;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(480px, 1fr) minmax(340px, 0.78fr);
+      }
+
+      .photo-back {
+        height: 230px;
+        width: 188px;
+      }
+
+      .photo-main {
+        height: min(100%, 460px);
+        width: min(86%, 340px);
+      }
+
+      .photo-side {
+        height: 208px;
+        width: 174px;
+      }
+
+      .portrait-note {
+        left: -9%;
+        top: 10%;
+      }
+
+      .portrait-role {
+        font-size: 20px;
+        max-width: 168px;
+      }
+
+      .portrait-arrow {
+        left: 18%;
+      }
+
+      .built-section {
+        padding-left: 36px;
+        padding-right: 36px;
+      }
+
+      .built-layout {
+        grid-template-columns: minmax(430px, 1.1fr) minmax(300px, 0.9fr);
+      }
+    }
+
+    @media (max-width: 820px) {
+      .hero {
+        padding: 28px 28px 26px;
+      }
+
+      .hero-nav {
+        flex-wrap: wrap;
+        gap: 16px 20px;
+      }
+
+      .hero-nav-items {
+        flex-wrap: wrap;
+        gap: 16px 20px;
+      }
+
+      .nav-spacer {
+        display: none;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding-top: 72px;
+      }
+
+      .hero-copy {
+        padding-bottom: 0;
+      }
+
+      .hero-title {
+        font-size: clamp(50px, 9vw, 58px);
+      }
+
+      .script-accent {
+        font-size: clamp(58px, 10vw, 66px);
+      }
+
+      .hero-meta {
+        margin-top: 42px;
+      }
+
+      .photo-cluster {
+        height: 420px;
+        margin-top: 8px;
+        max-width: 620px;
+      }
+
+      .photo-back {
+        left: 6%;
+        top: 9%;
+      }
+
+      .photo-main {
+        left: 50%;
+        top: 50%;
+      }
+
+      .photo-side {
+        right: 5%;
+        top: 43%;
+      }
+
+      .portrait-note {
+        left: -4%;
+        top: 8%;
+      }
+
+      .portrait-arrow {
+        left: 22%;
+        top: 18%;
+      }
+
+      .built-section {
+        padding: 78px 28px;
+      }
+
+      .built-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .built-copy {
+        padding-left: 0;
+      }
+
+      .built-copy p {
+        max-width: 620px;
+      }
+
+      .phone-tap-hint {
+        left: 16px;
+        top: -60px;
+      }
+
+      .phone-tap-hint-label {
+        font-size: 20px;
+      }
+
+      .phone-shell {
+        width: min(100%, 310px);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        min-height: 100svh;
+        padding: 22px 18px 24px;
+      }
+
+      .hero-nav {
+        align-items: center;
+        gap: 0;
+        justify-content: space-between;
+        left: 18px;
+        right: 18px;
+        top: 22px;
+        transform: none;
+        width: auto;
+      }
+
+      .hero-nav-toggle {
+        display: inline-flex;
+        margin-left: auto;
+      }
+
+      .hero-nav-items {
+        align-items: flex-start;
+        background: var(--paper);
+        border: 1px solid rgba(26, 26, 26, 0.14);
+        box-shadow: 0 14px 36px rgba(26, 26, 26, 0.08);
+        display: none;
+        flex: initial;
+        flex-direction: column;
+        font-size: 15px;
+        gap: 18px;
+        left: 0;
+        padding: 22px;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 14px);
+        z-index: 30;
+      }
+
+      .hero-nav.is-open .hero-nav-items {
+        display: flex;
+      }
+
+      .hero-nav-items .nav-spacer {
+        display: none;
+      }
+
+      .hero-nav-items .lang-switch {
+        border-top: 1px dashed rgba(26, 26, 26, 0.18);
+        margin-left: 0;
+        margin-top: 6px;
+        padding-top: 18px;
+        width: 100%;
+      }
+
+      .hero-grid {
+        display: block;
+        padding-top: 54px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 12vw, 52px);
+        line-height: 1.04;
+      }
+
+      .hero-title-line {
+        white-space: normal;
+      }
+
+      .underlined-phrase > svg {
+        width: 100% !important;
+      }
+
+      .script-accent {
+        font-size: clamp(52px, 15vw, 64px);
+        margin-left: 0;
+      }
+
+      .down-mark {
+        font-size: 50px;
+        margin-left: 6px;
+      }
+
+      .hero-meta {
+        font-size: 11px;
+        line-height: 1.75;
+        margin-top: 34px;
+      }
+
+      .newsletter-title {
+        font-size: 20px;
+      }
+
+      .newsletter-row {
+        grid-template-columns: 1fr;
+        width: min(100%, 320px);
+      }
+
+      .newsletter-row button {
+        width: max-content;
+      }
+
+      .built-section {
+        padding: 66px 18px;
+      }
+
+      .contact-page {
+        padding: 110px 18px 64px;
+      }
+
+      .contact-email {
+        font-size: 14px;
+      }
+
+      .article-wrap {
+        padding: 92px 18px 72px;
+      }
+
+      .article-hero h1 {
+        font-size: clamp(30px, 8.5vw, 42px);
+      }
+
+      .article-hero p,
+      .article-body p {
+        font-size: 15px;
+      }
+
+      .app-note img {
+        border-radius: 24px;
+        height: 98px;
+        width: 98px;
+      }
+
+      .tools-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .build-photo-rail img {
+        height: 230px;
+      }
+
+      .tools-strip div,
+      .tools-strip div:nth-child(odd) {
+        border-left: 0;
+        border-top: 1px solid var(--rule-firm);
+        padding: 18px 0 0;
+      }
+
+      .tools-strip div:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .built-copy h2 {
+        font-size: 52px;
+      }
+
+      .built-copy p {
+        font-size: 15px;
+      }
+
+      .phone-tap-hint {
+        left: 14px;
+        top: -54px;
+      }
+
+      .phone-tap-hint-label {
+        font-size: 18px;
+      }
+
+      .phone-shell {
+        border-radius: 36px;
+        padding: 18px;
+        width: min(100%, 286px);
+      }
+
+      .phone-screen {
+        border-radius: 28px;
+      }
+
+      .home-app {
+        width: 68px;
+      }
+
+      .home-app-icon {
+        border-radius: 15px;
+        height: 54px;
+        width: 54px;
+      }
+
+      .hero-sparkle-one {
+        left: 74%;
+        top: -12px;
+      }
+
+      .hero-sparkle-two {
+        display: none;
+      }
+
+      .photo-cluster {
+        height: 350px;
+        margin-top: 34px;
+      }
+
+      .photo-back {
+        height: 205px;
+        left: 0;
+        top: 4px;
+        width: 168px;
+      }
+
+      .photo-main {
+        height: 320px;
+        left: 50%;
+        top: 50%;
+        width: min(76vw, 250px);
+      }
+
+      .photo-side {
+        height: 170px;
+        left: 16%;
+        right: auto;
+        top: 210px;
+        width: 150px;
+      }
+
+      .cluster-note {
+        font-size: 21px;
+        left: 6%;
+        top: 0;
+      }
+
+      .cluster-arrow {
+        left: 30%;
+        top: 12px;
+      }
+
+      .portrait-note {
+        left: 0;
+        top: 0;
+      }
+
+      .portrait-name {
+        font-size: 44px;
+      }
+
+      .portrait-role {
+        font-size: 18px;
+        max-width: 150px;
+      }
+
+      .portrait-arrow {
+        left: 28%;
+        top: 54px;
+        transform: rotate(-10deg) scale(0.86);
+      }
+
+      .cluster-scribble,
+      .cluster-smiley {
+        display: none;
+      }
+
+      .scroll-cue {
+        font-size: 10px;
+        line-height: 1.6;
+        margin-top: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <template id="blog-en-template">
+      <header class="article-hero">
+        <div>
+          <div class="article-meta">vibe coding · AI app building · iOS launch</div>
+          <h1>Vibe Coding Case Study: I built and shipped my first iOS app with AI in one week</h1>
+        </div>
+        <div class="app-note" aria-label="one moment app icon">
+          <img src="uploads/onemoment-icon.png" alt="one moment app icon" />
+          <span>one moment</span>
+        </div>
+      </header>
+
+      <div class="intro-quote">
+        If you are looking for how to build an app with AI, how to start vibe coding, or how a non-engineer can ship an app to the App Store, this is the walkthrough I wish I had. I took one idea through vibe coding → design → development → review → launch, with one constraint: finish it in one week.
+      </div>
+
+      <section class="tools-strip" aria-label="Tools used">
+        <div>
+          <span>AI agent</span>
+          <strong>Antigravity for coding and logic changes</strong>
+        </div>
+        <div>
+          <span>Prototype</span>
+          <strong>Google Stitch for the first prototype</strong>
+        </div>
+        <div>
+          <span>Preview</span>
+          <strong>Google AI Studio for interaction previews</strong>
+        </div>
+        <div>
+          <span>Ship</span>
+          <strong>Xcode for packaging, signing, and upload</strong>
+        </div>
+      </section>
+
+      <section class="build-photo-strip" aria-label="one moment build screenshots">
+        <div class="build-photo-rail">
+          <img src="uploads/one-moment-build/01-prototype.png" alt="one moment early prototype screenshot" draggable="false" />
+          <img src="uploads/one-moment-build/02-interface.png" alt="one moment interface screenshot" draggable="false" />
+          <img src="uploads/one-moment-build/03-preview.png" alt="one moment interaction preview screenshot" draggable="false" />
+          <img src="uploads/one-moment-build/04-code.png" alt="one moment build workspace screenshot" draggable="false" />
+          <img src="uploads/one-moment-build/05-store.png" alt="one moment App Store setup screenshot" draggable="false" />
+          <img src="uploads/one-moment-build/06-launch.png" alt="one moment launch screenshot" draggable="false" />
+        </div>
+      </section>
+
+      <div class="article-body">
+        <h2>Why I wrote this vibe coding case study</h2>
+        <p>
+          This was my first iOS app built with AI, and my first time running the full loop of <strong>turning an idea into a real product and shipping it to the App Store</strong>.
+          I wanted to document not just what I made, but <strong>how each step actually worked, what tools I used, and where I got stuck</strong>, especially around App Store review.
+        </p>
+        <p>
+          For me, the real meaning of this app was not the app alone. It was proving that I could complete the loop:
+          <strong>vibe coding → design → development → review → launch</strong>. I gave myself one hard constraint: <strong>finish it in one week</strong>.
+        </p>
+        <p>
+          That time limit forced the product to stay simple. If I had chosen something with accounts, databases, and server sync, the foundation alone would have eaten the week.
+          For a first AI-built app, I strongly recommend choosing something <strong>simple and personally interesting</strong>: a local-first tool with no backend is the easiest shape for completing the full loop.
+        </p>
+
+        <h2>The tools I used to build an iOS app with AI</h2>
+        <p>For this vibe coding workflow, these were the main tools:</p>
+        <ul>
+          <li><strong>Antigravity</strong>: the AI agent I used for most of the coding and logic work. It was the core tool in the flow.</li>
+          <li><strong>Google Stitch</strong>: an AI prototyping tool I used to generate the first interface direction.</li>
+          <li><strong>Google AI Studio</strong>: where I previewed the interaction and motion after exporting from Stitch.</li>
+          <li><strong>Xcode</strong>: Apple's official iOS development environment. If you want to ship to the App Store, you cannot avoid it.</li>
+          <li><strong>Apple Developer account</strong>: the hard requirement for App Store distribution, currently $99/year.</li>
+          <li><strong>Visual references</strong>: images that helped the AI understand the record-player mood I wanted.</li>
+        </ul>
+
+        <h2>The full process: from AI prototype to App Store launch</h2>
+
+        <section class="timeline" aria-label="Vibe coding steps">
+          <div class="step">
+            <div class="step-number">01</div>
+            <div>
+              <h3>Generate the first product prototype in Google Stitch</h3>
+              <p>
+                I started with <strong>Google Stitch</strong> to turn the rough idea in my head into something visible. This step changes “I want to make this kind of app”
+                from a vague feeling into an interface you can actually inspect. For beginners, the useful part is that you do not need to draw screens or know Figma.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">02</div>
+            <div>
+              <h3>Export to Google AI Studio to preview motion</h3>
+              <p>
+                The Stitch output is mostly static. <strong>After exporting it to Google AI Studio, I could preview the interactive version</strong>.
+                This mattered because motion tells you whether the product feels right in a way static screens cannot.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">03</div>
+            <div>
+              <h3>Download the project to my computer</h3>
+              <p>
+                Once the prototype felt close enough, I <strong>downloaded the full project</strong>. This was the key move from “online prototype”
+                to “local development project.”
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">04</div>
+            <div>
+              <h3>Open the project in Antigravity</h3>
+              <p>
+                I opened the downloaded folder in <strong>Antigravity</strong>. From here, the AI agent became the main coding partner,
+                and the project officially entered the <strong>vibe coding</strong> phase.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">05</div>
+            <div>
+              <h3>Ask AI to turn the project into a shippable iOS app</h3>
+              <p>
+                This was the biggest jump in the whole process. I asked Antigravity directly:
+                <strong>“How do I turn this product into a complete app that can be submitted to the App Store?”</strong>
+              </p>
+              <p>
+                Then I followed the steps. It guided me through installing Xcode, setting up an Apple Developer account, changing the project structure, and generating the native iOS project files.
+              </p>
+              <p>
+                From there, the workflow became a <strong>two-track setup</strong>: Antigravity handled code and logic; Xcode handled device preview, packaging, signing, and upload.
+                Xcode is what turns the project into an iOS-ready build, signs it, and uploads it through <strong>App Store Connect</strong>.
+              </p>
+              <p>
+                <strong>This is why building an iOS app with AI still requires Xcode</strong>: it is the final mile of shipping.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">06</div>
+            <div>
+              <h3>Use AI to polish the interface with references and exact numbers</h3>
+              <p>
+                I wanted the whole app to feel like a <strong>record player</strong>. This was the most interesting part of vibe coding:
+                <strong>AI + natural language + visual references</strong>. I gave the AI record-player images, explained the mood, then iterated in plain language.
+              </p>
+              <p>
+                For detailed changes, the prompts that worked best were specific: “move this 20px left,” “move it 10px down,”
+                “make this button 1.2x larger,” or “reduce this font size slightly.”
+              </p>
+              <p>
+                <strong>The UI lesson from vibe coding</strong>: do not just say “this feels wrong.” Give a direction and a number. That makes each iteration visible.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">07</div>
+            <div>
+              <h3>Submit to App Store review, and get rejected once</h3>
+              <p>
+                Once the code and interface were ready, I uploaded the build through Xcode to <strong>App Store Connect</strong> and submitted it for review. <strong>The first submission failed.</strong>
+              </p>
+              <p>
+                Apple's reason was simple: I had a “login” button in the interface, but the app <strong>did not actually have a login feature</strong>.
+                It runs locally and stores everything on the user's device. I had added the login entry as a “maybe later” placeholder.
+              </p>
+              <p>
+                But the <strong>App Store Review Guidelines</strong> are clear: <strong>if a feature is not available now, it should not appear in the app</strong>.
+                This is a common beginner mistake.
+              </p>
+              <p>
+                The fix was simple: remove the login entry, resubmit, and <strong>the second review passed</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="pull-note">
+          If this is your first time submitting to the App Store, read Apple's App Store Review Guidelines before submission, especially the parts around feature completeness and placeholder functionality.
+        </div>
+
+        <h2>A few honest reflections after shipping with AI</h2>
+        <p>
+          Looking back, I learned much more than “how to make an app.” <strong>The fastest way to learn AI tools is to use them on a real project.</strong>
+          Tutorials and prompt collections help, but nothing teaches like making something that actually has to work. I wanted this to become a <strong>real usable product</strong>,
+          not just another prototype.
+        </p>
+        <p>
+          That is why the $99 Apple Developer account felt worth it to me. The feeling of seeing your product live in the App Store is completely different from stopping at a demo:
+          friends can download it, people can use it, and that momentum makes you want to build the next thing.
+        </p>
+        <p>
+          One more honest note: <strong>I spent a long time watching AI from the sidelines before actually building with it.</strong>
+        </p>
+        <p>
+          What helped me move was not one viral tutorial. It was a community: <strong>the AI builders community</strong>.
+          I kept seeing people with similar starting points actually build, launch, and improve their products with AI.
+          Slowly, my thought changed from “this seems hard” to “maybe I can do this too.”
+        </p>
+        <p>
+          <strong>Learning AI is easier with people beside you.</strong> Alone, it is easy to get stuck and stop.
+          Around people who keep building and sharing, you borrow their rhythm and keep moving.
+        </p>
+
+        <h2>Join the AI builders community</h2>
+        <p>
+          If this case study made you think “I want to build my own app too,” you are welcome to join us, whether you are <strong>starting from zero</strong>
+          or already using AI but stuck somewhere in the process. In the community, you can see real people ship products with AI, solve practical problems, and keep each other going.
+        </p>
+        <p class="reading-signoff">thanks for reading this far ✿</p>
+        <p class="community-cta">
+          Learn AI together, and build products that can actually launch.<br />
+          <a class="community-link" href="https://pathunfold.com/remi">Join the AI builders community →</a>
+        </p>
+      </div>
+  </template>
+  <template id="blog-zh-template">
+      <header class="article-hero">
+        <div>
+          <div class="article-meta">vibe coding · AI 做 app · iOS 上架实战</div>
+          <h1>Vibe Coding 实战教程：我用 AI 一周做出第一个 iOS App 并上架 App&nbsp;Store</h1>
+        </div>
+        <div class="app-note" aria-label="one moment app icon">
+          <img src="uploads/onemoment-icon.png" alt="one moment app icon" />
+          <span>one moment</span>
+        </div>
+      </header>
+
+      <div class="intro-quote">
+        如果你正在搜“怎么用 AI 做 app”、“vibe coding 怎么入门”，或者“不懂代码怎么把 app 上架 App Store”，这篇文章就是写给你的。我完整跑通了 vibe coding → 设计 → 开发 → 提审 → 上架 的闭环，给自己的硬约束是：一周做完。
+      </div>
+
+      <section class="tools-strip" aria-label="Tools used">
+        <div>
+          <span>AI agent</span>
+          <strong>Antigravity 写代码、改逻辑</strong>
+        </div>
+        <div>
+          <span>Prototype</span>
+          <strong>Google Stitch 生成原型</strong>
+        </div>
+        <div>
+          <span>Preview</span>
+          <strong>Google AI Studio 看动态效果</strong>
+        </div>
+        <div>
+          <span>Ship</span>
+          <strong>Xcode 打包、签名、上传</strong>
+        </div>
+      </section>
+
+      <section class="build-photo-strip" aria-label="one moment 制作截图">
+        <div class="build-photo-rail">
+          <img src="uploads/one-moment-build/01-prototype.png" alt="one moment 早期原型截图" draggable="false" />
+          <img src="uploads/one-moment-build/02-interface.png" alt="one moment 界面截图" draggable="false" />
+          <img src="uploads/one-moment-build/03-preview.png" alt="one moment 动态预览截图" draggable="false" />
+          <img src="uploads/one-moment-build/04-code.png" alt="one moment 搭建工作区截图" draggable="false" />
+          <img src="uploads/one-moment-build/05-store.png" alt="one moment App Store 设置截图" draggable="false" />
+          <img src="uploads/one-moment-build/06-launch.png" alt="one moment 上线截图" draggable="false" />
+        </div>
+      </section>
+
+      <div class="article-body">
+        <h2>写在前面：为什么写这篇 Vibe Coding 教程</h2>
+        <p>
+          这是我用 AI 搭建的第一个 iOS App，也是我<strong>完整跑通“从 0 到 1 用 AI 做产品并上架 App Store”全流程</strong>的一次实战记录。
+          我想分享的不只是“我做了什么”，更是<strong>每一步具体怎么操作、用什么工具、踩了什么坑</strong>，尤其是 App Store 审核被拒后怎么处理。
+        </p>
+        <p>
+          对我来说，这个 App 真正的意义不在产品本身，而在于我跑通了
+          <strong>vibe coding → 设计 → 开发 → 提审 → 上架</strong>的完整闭环。整个过程我给自己定了一个硬约束：<strong>一周做完</strong>。
+        </p>
+        <p>
+          一周这个时间限制反过来约束了产品复杂度。如果做需要用户登录、数据库、服务器同步的产品，光这些“地基”就吃掉一周了。
+          所以做第一个 AI App，我强烈建议你也选<strong>简单 + 感兴趣</strong>的组合：一个本地运行、本地存储、不需要后端的小工具，是最适合用 vibe coding 跑通全流程的形态。
+        </p>
+
+        <h2>用 AI 做 iOS App 需要哪些工具</h2>
+        <p>整个 vibe coding 流程，我主要用了这几样：</p>
+        <ul>
+          <li><strong>Antigravity</strong>：Google 出的 AI agent，是我最主要的 vibe coding 工具。和 Codex 这类工具相比，Google 模型在视觉设计感上更突出，做 UI 偏重的产品比较顺手。这是整个流程的核心。</li>
+          <li><strong>Google Stitch</strong>：AI 原型设计工具，用来生成产品最初的界面原型。</li>
+          <li><strong>Google AI Studio</strong>：把 Stitch 生成的内容导进去可以预览动态交互效果。</li>
+          <li><strong>Xcode</strong>：苹果官方的 iOS 开发环境，任何想上架 App Store 的 iOS App 都绕不开它。</li>
+          <li><strong>Apple 开发者账号</strong>：上架 App Store 的硬门槛，年费 99 美元。</li>
+          <li><strong>图片素材</strong>：作为视觉参考，帮助 AI 更准确地理解我要的唱片机风格。</li>
+        </ul>
+
+        <h2>用 AI 做 iOS App 的完整步骤</h2>
+
+        <section class="timeline" aria-label="Vibe coding steps">
+          <div class="step">
+            <div class="step-number">01</div>
+            <div>
+              <h3>用 Google Stitch 生成产品原型</h3>
+              <p>
+                我先用 <strong>Google Stitch</strong> 把脑子里的产品形态做了出来。这一步是把“我想做一个什么样的 App”
+                从模糊的想法变成可以看的界面。对零基础用户来说，Stitch 的好处是<strong>完全不用画图、不用懂 Figma</strong>，自然语言描述就能出界面。
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">02</div>
+            <div>
+              <h3>导出到 Google AI Studio 预览动态效果</h3>
+              <p>
+                Stitch 出来的是相对静态的原型，<strong>把它导出到 Google AI Studio 之后，可以预览到带交互的动态效果</strong>。
+                这一步的价值在于：你能直观判断这个 App 跑起来到底是不是你想要的感觉，比看静态图准很多。
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">03</div>
+            <div>
+              <h3>打包项目下载到本地电脑</h3>
+              <p>
+                在 AI Studio 里调到比较满意的状态后，把整个项目<strong>打包下载到电脑</strong>。这一步是从“在线原型”
+                过渡到“本地开发”的关键一跳。
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">04</div>
+            <div>
+              <h3>用 Antigravity 打开项目</h3>
+              <p>
+                把刚才下载的文件夹，<strong>用 Antigravity 打开</strong>。从这一步开始，AI agent 正式接管主要的开发工作，
+                正式进入 <strong>vibe coding</strong> 阶段。
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">05</div>
+            <div>
+              <h3>让 AI 把项目变成可上架的 iOS App</h3>
+              <p>
+                这一步是整个 vibe coding 流程里最关键的一跳。我直接在 Antigravity 里问 AI：
+                <strong>“怎么把这个产品变成一个可以上架到 App Store 的完整文件？”</strong>
+              </p>
+              <p>
+                然后跟着 AI 一步步做。它会让你下载 Xcode、配置 Apple 开发者账号、调整项目结构、生成 iOS 原生项目文件，你基本只要照着指示执行就行。
+              </p>
+              <p>
+                从这一步开始，整个开发就形成了<strong>双轨工作流</strong>：Antigravity 负责写代码、改逻辑；Xcode 负责实时预览、打包、签名、上传。
+                只有 Xcode 才能把项目构建成 iOS 可用的 IPA 格式，完成代码签名，然后通过 Xcode 工具链上传到 <strong>App Store Connect</strong> 走审核流程。
+              </p>
+              <p>
+                <strong>这就是为什么用 AI 做 iOS App 一定要装 Xcode</strong>：它是上架这件事的“最后一公里”，绕不过去。
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">06</div>
+            <div>
+              <h3>用 AI 改样式：图片参考 + 精确数字</h3>
+              <p>
+                我希望整个 App 做成<strong>唱片机</strong>的视觉风格。这一步是 vibe coding 里最有意思的环节，方法是
+                “<strong>AI + 自然语言 + 图片参考</strong>”三件套：把我喜欢的唱片机图片直接发给 AI，告诉它“我想要的感觉是这样的”，然后用自然语言一点点调整。
+              </p>
+              <p>
+                改细节时我最常用的两类 prompt 指令是：位置类，比如“这个元素往左/右移动 20px”、“再往下挪 10px”；
+                大小类，比如“这个按钮放大 1.2 倍”、“字号缩小一点”。
+              </p>
+              <p>
+                <strong>vibe coding 改 UI 的核心心法</strong>：不要说“我觉得不太对”，AI 猜不出来。要给具体方向 + 具体数字，每一轮都能看见进展。
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">07</div>
+            <div>
+              <h3>提交 App Store 审核，以及第一次被拒</h3>
+              <p>
+                代码和样式都搞定后，通过 Xcode 把构建产物上传到 <strong>App Store Connect</strong>，提交审核。<strong>第一次没过。</strong>
+              </p>
+              <p>
+                苹果给的拒绝理由：我在界面里放了一个“登录”按钮，但这个 App 实际上<strong>根本没有真正的登录功能</strong>。
+                它完全本地运行，所有数据都存在用户手机本地，换设备不会同步。我之所以放登录入口，本来是想着“以后可能加上”。
+              </p>
+              <p>
+                但 <strong>App Store 审核规则</strong>很明确：<strong>如果一个功能当下不可用，就不应该出现在 App 里</strong>。
+                这是非常常见的拒审原因，新手一定要避开。
+              </p>
+              <p>
+                修复方法很简单：把那个登录入口直接移除，重新提交，<strong>第二次就过了</strong>。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="pull-note">
+          如果你也是第一次走 App Store 上架流程，强烈建议提前看一遍苹果官方的 App Store Review Guidelines，尤其是“功能完整性”和“占位功能”那几条。
+        </div>
+
+        <h2>用 AI 做产品的几点真实复盘</h2>
+        <p>
+          回头看，这一周我学到的远不止“做出了一个 App”。<strong>AI 时代，学习 AI 工具最快的方式就是从一个真实项目入手。</strong>
+          看再多 vibe coding 教程、收藏再多 prompt 模板，都不如自己真的做一个东西。对我来说，我希望我的项目是一个<strong>真正可用的产品</strong>，
+          而不只是停留在原型阶段。
+        </p>
+        <p>
+          所以我觉得花 99 美元买一个 Apple 开发者账号非常值。产品真正上线带来的成就感，是停在 demo 阶段的原型完全没法比的：
+          你能在 App Store 里搜到自己的 App，朋友能下载来用，这种感觉会反过来推着你想做下一个、下下一个产品。
+        </p>
+        <p>
+          另外想分享一件挺重要的事：<strong>从“观望 AI”到“真正上手用 AI 做产品”，我自己拖了很久。</strong>
+        </p>
+        <p>
+          让我真的迈出那一步的，不是某一篇爆款教程，而是一个社群：<strong>用 AI 发电社群</strong>。
+          在这里我看到很多和我一样的小白，真实地用 AI 把自己的产品做出来、上架、跑起来。
+          看着看着，我心里那句话慢慢从“这事好像很难”变成了：“哎，或许我也可以做到？”
+        </p>
+        <p>
+          <strong>AI 学习这件事，真的需要同伴一起前行。</strong> 一个人摸索，很容易在某个卡点停下来就再也不动了；
+          有一群人在旁边持续做、持续分享，你会被这种节奏带着往前走。
+        </p>
+
+        <h2>写在最后：欢迎加入用 AI 发电社群</h2>
+        <p>
+          如果你看完这篇 vibe coding 教程觉得”我也想做一个自己的 App”：无论你是<strong>完全零基础的技术小白</strong>，
+          还是已经在用 AI 但卡在某一步上不去，<strong>真诚欢迎你加入我们的”用 AI 发电”社群</strong>。
+          在这里你能看到其他人真实地用 AI 上架产品、解决问题、互相打气。
+        </p>
+        <p class="reading-signoff">看到这里 — 谢谢你 ✿</p>
+        <p class="community-cta">
+          一起学习 AI，一起做出真正能上线的产品。<br />
+          <a class="community-link" href="https://pathunfold.com/remi">加入用 AI 发电社群 →</a>
+        </p>
+      </div>
+  </template>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="components/scribble.jsx"></script>
+  <script type="text/babel" src="app.jsx?v=20260510-deploy-ready"></script>
+</body>
+</html>

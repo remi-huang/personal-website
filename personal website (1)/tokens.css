@@ -1,0 +1,134 @@
+/* ============================================================
+ * Remi Personal Site — Design Tokens v1.0
+ * Source of truth for colors, typography, spacing, and rules.
+ * Linked from every HTML page; do not redefine :root elsewhere.
+ * ============================================================ */
+
+@font-face {
+  font-display: swap;
+  font-family: 'ChenYuluoyan 2.0';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local('ChenYuluoyan 2.0'),
+    local('ChenYuluoyan-2.0-Thin'),
+    url('https://raw.githubusercontent.com/Chenyu-otf/chenyuluoyan_thin/main/ChenYuluoyan-2.0-Thin.ttf') format('truetype');
+}
+
+:root {
+  /* === Color · Paper & Ink === */
+  --paper:        #fdfbf5;
+  --paper-warm:   #f4efe4;
+  --ink-black:    #1a1a1a;   /* headings, window outlines */
+  --ink-body:     #3b3b3b;   /* body copy */
+  --ink-soft:     #666666;   /* meta, captions, placeholders */
+  --ink-blue:     #1d3a8a;   /* primary accent — 90% of accents */
+
+  /* === Color · Physical objects only (clips / tape / dots) === */
+  --clip-red:     #d94a3a;
+  --clip-yellow:  #e8b73a;
+  --status-green: #3a8a4a;
+
+  /* === Color · Rules / dividers === */
+  --rule-soft:    rgba(26, 26, 26, 0.12);   /* section divider */
+  --rule-firm:    rgba(26, 26, 26, 0.20);   /* card / step border */
+
+  /* === Typography · Families === */
+  --font-display:     'Instrument Serif', Georgia, serif;
+  --font-display-cjk: 'Instrument Serif', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', serif;
+  --font-script:      'Caveat', cursive;
+  --font-script-cjk:  'ChenYuluoyan 2.0', 'KaiTi', 'STKaiti', cursive;
+  --font-body:        'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-cjk:    'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono:        'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* === Site nav === */
+  --nav-top: 36px;
+  --nav-page-gutter: 56px;
+  --nav-max-width: 1328px;
+  --nav-gap: 28px;
+  --nav-font-size: 13px;
+  --nav-letter-spacing: 0.02em;
+
+  /* === Typography · Scale (modular, 1.25 minor third) === */
+  --t-xs:   11px;   /* mono meta, footnotes */
+  --t-sm:   13px;   /* nav, mono body, captions */
+  --t-base: 15px;   /* body small, UI text */
+  --t-md:   17px;   /* body large (article body) */
+  --t-lg:   22px;   /* subhead, caveat caption */
+  --t-xl:   28px;   /* small display, build entry strong */
+  --t-2xl:  38px;   /* article h2 */
+  --t-3xl:  52px;   /* article h1 / mobile hero */
+  --t-4xl:  68px;   /* hero h1 / built h2 base */
+  --t-5xl:  86px;   /* built h2 max */
+
+  /* === Reading measure (line length) ===
+     Single source of truth for article-flow max-width.
+     EN default = 720px (~75 chars at 17px Inter)
+     ZH (set below) = 680px (~32 全角字符 — CJK 阅读舒适区)
+  ============================================================= */
+  --measure: 720px;
+
+  /* === Spacing · 8px baseline === */
+  --s-1:  8px;
+  --s-2:  16px;
+  --s-3:  24px;
+  --s-4:  32px;
+  --s-5:  48px;
+  --s-6:  64px;
+  --s-7:  96px;    /* section vertical rhythm */
+  --s-8:  128px;
+
+  /* === Radius === */
+  --r-sm:   4px;
+  --r-md:   12px;
+  --r-lg:   24px;
+  --r-pill: 999px;
+
+  /* === Shadow (drop / lift) === */
+  --shadow-photo: 0 18px 42px rgba(26,26,26,0.13), 0 2px 8px rgba(26,26,26,0.10);
+  --shadow-card:  0 14px 36px rgba(26,26,26,0.08);
+  --shadow-phone: 0 20px 52px rgba(26,26,26,0.12);
+
+  /* === Rotation rules (use as inline transform values) ===
+     handwriting / scribble : -4deg ~ +4deg
+     window / mono UI       : -2deg ~ +2deg
+     photo / polaroid       : -9deg ~ +9deg
+     tape / clip            : -20deg ~ +20deg
+     body text              : 0deg (always)
+  ============================================================= */
+}
+
+/* === Auto language-aware font families ============================
+ * Tag the <html> element with lang="zh-CN" or lang="en" and the
+ * default body font automatically swaps in the right CJK fallback.
+ * For specific elements, prefer explicit family vars over relying
+ * on this cascade.
+ * ================================================================ */
+
+html {
+  font-family: var(--font-body);
+}
+
+html[lang^="zh"] {
+  font-family: var(--font-body-cjk);
+  --measure: 680px;
+}
+
+html[lang^="zh"] body {
+  font-family: var(--font-body-cjk);
+}
+
+/* Display / script families respect language too — but only when an
+ * element opts in via the helper classes below. Most existing
+ * components keep their explicit font-family for now; this is here
+ * for new components. */
+
+.font-display      { font-family: var(--font-display); }
+.font-script       { font-family: var(--font-script); }
+.font-mono         { font-family: var(--font-mono); }
+.font-body         { font-family: var(--font-body); }
+
+html[lang^="zh"] .font-display { font-family: var(--font-display-cjk); }
+html[lang^="zh"] .font-script  { font-family: var(--font-script-cjk); }
+html[lang^="zh"] .font-body    { font-family: var(--font-body-cjk); }

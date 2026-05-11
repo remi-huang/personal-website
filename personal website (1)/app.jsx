@@ -36,7 +36,8 @@ const LANGUAGE_KEY = 'remi-site-language';
 const TALLY_FORM_URL = 'https://tally.so/r/VLv8bN';
 
 const getRouteFromHash = () => {
-  if (window.location.hash === '#blog') return 'blog';
+  if (window.location.hash === '#blog/one-moment-build') return 'blog-article';
+  if (window.location.hash === '#blog') return 'blog-index';
   if (window.location.hash === '#contact') return 'contact';
   return 'home';
 };
@@ -86,6 +87,19 @@ const copy = {
     products: {
       brewing: 'Brewing',
     },
+    blogIndex: {
+      filters: [
+        { id: 'all', label: 'ALL' },
+        { id: 'case-studies', label: 'CASE STUDIES' },
+        { id: 'ai-tools', label: 'AI TOOLS' },
+      ],
+      articleType: 'CASE STUDY',
+      articleDate: 'May 11, 2026',
+      articleTitle: 'I built and shipped my first iOS app with AI in one week',
+      articleSummary: 'From idea to App Store: the full loop of designing, building, reviewing, and shipping my first AI-assisted iOS app.',
+      readLabel: 'Read notes',
+      emptyTools: 'AI tool practice notes will show up here once they are ready.',
+    },
   },
   zh: {
     nav: {
@@ -130,6 +144,19 @@ const copy = {
     },
     products: {
       brewing: '搭建中',
+    },
+    blogIndex: {
+      filters: [
+        { id: 'all', label: 'ALL' },
+        { id: 'case-studies', label: '案例分享' },
+        { id: 'ai-tools', label: 'AI 工具' },
+      ],
+      articleType: '案例分享',
+      articleDate: '2026.05.11',
+      articleTitle: '我用 AI 一周做出第一个 iOS App，并上架 App Store',
+      articleSummary: '从 idea 到 App Store：完整跑通设计、开发、审核、上线的 AI 辅助 iOS app 实战。',
+      readLabel: '阅读笔记',
+      emptyTools: 'AI 工具实践笔记准备好之后，会出现在这里。',
     },
   },
 };
@@ -351,7 +378,7 @@ const WhatIBuiltSection = ({ lang }) => {
                 </svg>
               </a>
             </div>
-            <a className="build-entry" href="#blog" aria-label={text.buildAria}>
+            <a className="build-entry" href="#blog/one-moment-build" aria-label={text.buildAria}>
               <span className="build-entry-label">{text.buildLabel}</span>
               <span className="build-entry-text">{text.buildText}</span>
               <span className="build-entry-link">{text.buildLink} <span aria-hidden="true">→</span></span>
@@ -473,6 +500,53 @@ const BlogArticle = ({ lang }) => {
   );
 };
 
+const BlogIndex = ({ lang }) => {
+  const text = copy[lang].blogIndex;
+  const [activeFilter, setActiveFilter] = React.useState('all');
+  const showCaseStudy = activeFilter === 'all' || activeFilter === 'case-studies';
+
+  return (
+    <section className="blog-index" aria-label="Blog index">
+      <div className="blog-index-inner">
+        <nav className="blog-filter-nav" aria-label="Blog categories">
+          {text.filters.map((filter) => (
+            <button
+              type="button"
+              key={filter.id}
+              className={activeFilter === filter.id ? 'is-active' : ''}
+              onClick={() => setActiveFilter(filter.id)}
+              aria-pressed={activeFilter === filter.id}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="blog-index-grid">
+          {showCaseStudy ? (
+            <a className="blog-featured-card" href="#blog/one-moment-build">
+              <div className="blog-card-main">
+                <div>
+                  <div className="blog-card-meta-row">
+                    <span>{text.articleType}</span>
+                    <time>{text.articleDate}</time>
+                  </div>
+                  <h2>{text.articleTitle}</h2>
+                  <p>{text.articleSummary}</p>
+                </div>
+                <img src="uploads/onemoment-icon.png" alt="" />
+              </div>
+              <span className="blog-card-link">{text.readLabel} <span aria-hidden="true">→</span></span>
+            </a>
+          ) : (
+            <div className="blog-empty-state">{text.emptyTools}</div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ContactPage = ({ lang }) => (
   <section className="contact-page" aria-label="Contact Remi">
     <div className="contact-note">
@@ -524,10 +598,14 @@ const SiteHero = () => {
   }, [lang]);
 
   React.useEffect(() => {
-    if (route === 'blog') {
+    if (route === 'blog-article') {
       document.title = lang === 'zh'
         ? 'Vibe Coding 实战教程：我用 AI 一周做出第一个 iOS App 并上架 App Store · Remi'
         : 'Vibe Coding Case Study: I built and shipped my first iOS app with AI in one week · Remi';
+      return;
+    }
+    if (route === 'blog-index') {
+      document.title = lang === 'zh' ? 'Blog · Remi' : 'Blog · Remi';
       return;
     }
     if (route === 'contact') {
@@ -544,7 +622,7 @@ const SiteHero = () => {
       return;
     }
 
-    if (route === 'blog') {
+    if (route === 'blog-index' || route === 'blog-article') {
       setActiveSection('blog');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -575,7 +653,9 @@ const SiteHero = () => {
         onCloseMenu={closeMenu}
         onLanguageChange={handleLanguageChange}
       />
-      {route === 'blog' ? (
+      {route === 'blog-index' ? (
+        <BlogIndex lang={lang} />
+      ) : route === 'blog-article' ? (
         <BlogArticle lang={lang} />
       ) : route === 'contact' ? (
         <ContactPage lang={lang} />
